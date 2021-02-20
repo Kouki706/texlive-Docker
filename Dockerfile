@@ -8,8 +8,7 @@ RUN apt-get update && \
     build-essential \
     git \
     openssh-client \
-    wget \
-    locales && \
+    wget && \
     # clean to reduce image size
     apt-get clean -y && \
     apt-get autoremove -y && \
@@ -35,8 +34,8 @@ ENV PATH /usr/local/texlive/2020/bin/x86_64-linux:$PATH
 
 # install LaTeX packages with tlmgr
 RUN tlmgr install \
-    latexmk \
-    collection-latexextra \
+    collection-langjapanese \
     collection-latexrecommended \
+    collection-latexextra \
     collection-fontsrecommended \
-    collection-langjapanese
+    latexmk
