@@ -1,14 +1,14 @@
-FROM ubuntu:20.04
+FROM ubuntu:20.10
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 # install general packages
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    build-essential \
+    curl \
+    tar \
     git \
-    openssh-client \
-    wget && \
+    openssh-client && \
     # clean to reduce image size
     apt-get clean -y && \
     apt-get autoremove -y && \
@@ -17,8 +17,8 @@ RUN apt-get update && \
 
 # install texlive
 RUN mkdir /tmp/install-tl-unx && \
-    wget -P /tmp/install-tl-unx http://ftp.yz.yamagata-u.ac.jp/pub/CTAN/systems/texlive/tlnet/install-tl-unx.tar.gz --no-check-certificate && \
-    tar zxvf /tmp/install-tl-unx/install-tl-unx.tar.gz -C /tmp/install-tl-unx --strip-components 1 && \
+    curl http://ftp.yz.yamagata-u.ac.jp/pub/CTAN/systems/texlive/tlnet/install-tl-unx.tar.gz | \
+    tar zx -C /tmp/install-tl-unx --strip-components 1 && \
     printf "%s\n%s\n%s\n" \
     "selected_scheme scheme-basic" \
     "option_doc 0" \
@@ -28,6 +28,7 @@ RUN mkdir /tmp/install-tl-unx && \
     --profile=/tmp/install-tl-unx/texlive.profile \
     -repository http://ftp.yz.yamagata-u.ac.jp/pub/CTAN/systems/texlive/tlnet/ && \
     rm -rf /tmp/install-tl-unx
+
 
 # add TeX Live to PATH
 ENV PATH /usr/local/texlive/2020/bin/x86_64-linux:$PATH
