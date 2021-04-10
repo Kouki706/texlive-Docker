@@ -1,4 +1,4 @@
-# texlive2020
-Docker image for TeX Live 2020.
+# texlive2021
+Docker image for TeX Live 2021.
 
 Base image by alpine
