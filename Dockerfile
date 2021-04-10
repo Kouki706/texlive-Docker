@@ -1,6 +1,6 @@
 FROM alpine
 
-ENV PATH /usr/local/texlive/2020/bin/x86_64-linuxmusl:$PATH
+ENV PATH /usr/local/texlive/2021/bin/x86_64-linuxmusl:$PATH
 
 RUN apk add --no-cache curl perl openssh git && \
     apk add --no-cache --virtual .fetch-deps tar && \
@@ -19,7 +19,8 @@ RUN apk add --no-cache curl perl openssh git && \
     tlmgr install \
     collection-langjapanese \
     collection-latexrecommended \
-    collection-latexextra \
     collection-fontsrecommended \
     latexmk && \
     apk del .fetch-deps
+    
+    #     collection-latexextra \
