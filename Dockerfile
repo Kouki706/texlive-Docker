@@ -2,7 +2,7 @@ FROM alpine
 
 ENV PATH /usr/local/texlive/2021/bin/x86_64-linuxmusl:$PATH
 
-RUN apk add --no-cache curl perl openssh git && \
+RUN apk add --no-cache curl perl fontconfig-dev freetype-dev git && \
     apk add --no-cache --virtual .fetch-deps tar && \
     mkdir /tmp/install-tl-unx && \
     curl http://ftp.yz.yamagata-u.ac.jp/pub/CTAN/systems/texlive/tlnet/install-tl-unx.tar.gz | \
