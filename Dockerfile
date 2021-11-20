@@ -22,5 +22,8 @@ RUN apk add --no-cache curl perl fontconfig-dev freetype-dev git ghostscript && 
     collection-fontsrecommended \
     latexmk && \
     apk del .fetch-deps
-    
     #     collection-latexextra \
+
+WORKDIR /workspaces
+
+CMD ['/bin/bash']
