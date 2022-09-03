@@ -20,13 +20,18 @@ ENV PATH /usr/local/texlive/2022/bin/x86_64-linuxmusl:$PATH
 WORKDIR /workdir
 COPY --from=installer /usr/local/texlive /usr/local/texlive
 
-# 基本設定のインストール
-RUN apk add --no-cache perl perl-utils curl ghostscript py3-pip make git
+# 基本インストール
+RUN apk add --no-cache perl curl ghostscript \
+    make git \
+    # 追加インストール
+    # wget tar unzip perl-dev perl-app-cpanminus \
+    gcc libc-dev perl-dev perl-app-cpanminus \
+    py3-pip
 
 # tlmgrのアップデート
 RUN tlmgr update --self && \
     # minted用
     pip install pygments && \
     # latexindent用
-    echo "yes" | cpan Log::Log4perl YAML::Tiny Log::Dispatch::File File::HomeDir Unicode::GCString
+    cpanm -v Log::Log4perl YAML::Tiny Log::Dispatch::File File::HomeDir Unicode::GCString
 CMD ["ash"]
