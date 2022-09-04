@@ -15,23 +15,32 @@ RUN /tmp/install-tl-unx/install-tl \
     --profile=/tmp/install-tl-unx/texlive.profile \
     -repository=http://ftp.yz.yamagata-u.ac.jp/pub/CTAN/systems/texlive/tlnet/
 
+# latexindent用インストール
+RUN apk add --no-cache gcc libc-dev make \
+    perl-dev perl-app-cpanminus
+    # wget tar unzip perl-dev perl-app-cpanminus \
+RUN cpanm -v Log::Log4perl YAML::Tiny Log::Dispatch::File File::HomeDir Unicode::GCString
+
 FROM alpine
+# tex環境変数
 ENV PATH /usr/local/texlive/2022/bin/x86_64-linuxmusl:$PATH
-WORKDIR /workdir
+# tex コピー
 COPY --from=installer /usr/local/texlive /usr/local/texlive
+# latexindent コピー
+COPY --from=installer /usr/lib /usr/lib
+COPY --from=installer /usr/local/lib /usr/local/lib
+COPY --from=installer /usr/local/share /usr/local/share
 
 # 基本インストール
 RUN apk add --no-cache perl curl ghostscript \
     make git \
     # 追加インストール
-    # wget tar unzip perl-dev perl-app-cpanminus \
-    gcc libc-dev perl-dev perl-app-cpanminus \
     py3-pip
 
 # tlmgrのアップデート
 RUN tlmgr update --self && \
     # minted用
-    pip install pygments && \
-    # latexindent用
-    cpanm -v Log::Log4perl YAML::Tiny Log::Dispatch::File File::HomeDir Unicode::GCString
+    pip install pygments
+
+WORKDIR /workdir
 CMD ["ash"]
